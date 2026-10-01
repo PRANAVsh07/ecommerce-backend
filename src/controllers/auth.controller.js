@@ -1,4 +1,4 @@
-import {registerService,login} from "../services/auth.service.js";
+import {registerService,login,profileservice} from "../services/auth.service.js";
 
 const registerUser = async (req, res) => {
     const user = await registerService(req.body);
@@ -30,4 +30,19 @@ const userlogin  = async(req,res)=>{
 
     });
 };
-export  {registerUser,userlogin}
+
+
+const profile = async(req,res)=>{
+     const user = await profileservice(req.user.id);
+
+     res.status(200).json({
+        message:"Profie",
+        user:{
+          name:user.name,
+          email:user.email,
+          role:user.role,
+        }
+     })
+
+}
+export  {registerUser,userlogin,profile}

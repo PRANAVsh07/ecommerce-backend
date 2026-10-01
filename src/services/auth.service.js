@@ -19,7 +19,8 @@ const registerService = async  (data) => {
     const user = await User.create({
         name,
         password: hashedPassword,
-        email
+        email,
+       
     });
 
     return user;
@@ -57,7 +58,12 @@ const login = async(data)=>{
 
       };
 
+      const profileservice =async(userId)=>{
+        const user  = await User.findById(userId);
+      return user
+      }
 
 
 
-export  {registerService,login};
+
+export  {registerService,login,profileservice};

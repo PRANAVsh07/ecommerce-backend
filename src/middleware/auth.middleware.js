@@ -1,19 +1,28 @@
-const authHeader = req.headers.authorization;
+import jwt from "jsonwebtoken";
+import AppError from "../error/usererror.js";
 
-if (!authHeader) {
-    throw new AppError("Token not found", 401);
-}
+const authMiddleware = (req, res, next) => {
+    
+    console.log("AUTH MIDDLEWARE HIT");
+    const authHeader = req.headers.authorization;
 
-const parts = authHeader.split(" ");
+    if (!authHeader) {
+        throw new AppError("Token not found", 401);
+    }
 
-if (parts[0] !== "Bearer" || !parts[1]) {
-    throw new AppError("Invalid authorization format", 401);
-}
+    const parts = authHeader.split(/\s+/);
 
-const token = parts[1];
+    if (parts[0] !== "Bearer" || !parts[1]) {
+        throw new AppError("Invalid authorization format", 401);
+    }
 
-const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const token = parts[1];
 
-req.user = decoded;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-next();
+    req.user = decoded;
+
+    next();
+};
+
+export default authMiddleware;
