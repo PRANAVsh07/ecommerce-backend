@@ -1,5 +1,6 @@
 import AppError from "../error/usererror.js"
-import { createProductService,getProduct,update } from "../services/product.service.js"
+import Product from "../models/product.model.js"
+import { createProductService,getProduct,update,deleteProduct } from "../services/product.service.js"
 
 
 const createProduct = async(req ,res)=>{
@@ -42,4 +43,16 @@ const updateProduct = async(req,res)=>{
      })
 }
 
-export  { createProduct,getProducts ,updateProduct } 
+ const DeleteProduct  = async(req,res)=>{
+    const productid = req.params.id
+
+   const result  = await deleteProduct(productid);
+
+   res.status(200).json({
+    message:"product deleted successfully"
+      
+   })
+
+ }
+
+export  { createProduct,getProducts ,updateProduct ,DeleteProduct  } 

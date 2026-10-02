@@ -42,4 +42,16 @@ const update = async(id ,changes)=>{
   return updated
 
 }
-export{createProductService, getProduct,update} 
+
+const deleteProduct = async(data)=>{
+
+    const user = await Product.findById(data)
+
+       if(!user){
+        throw new AppError("NO user found",404)
+       }
+     const answer  = await Product.findByIdAndDelete(data)
+
+     return answer;
+}
+export{createProductService, getProduct,update,deleteProduct} 
