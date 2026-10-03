@@ -20,6 +20,7 @@ const getProducts = async (req, res) => {
     if (!result) {
         throw new AppError("Product not found", 404);
     }
+    
 
     if (Array.isArray(result) && result.length === 0) {
         throw new AppError("No products found", 404);
