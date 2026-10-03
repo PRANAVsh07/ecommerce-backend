@@ -15,16 +15,24 @@ const orders = async(data)=>{
     if (finduser.items.length === 0) {
     throw new AppError("cart is empty", 400);
 }
+    const cost =0;
+for (const item of finduser.items) {
+    const product = await Product.findById(item.product);
 
-const item = finduser.items.find(
-    item => item.product.toString() === productid
-);
- if(!item){
-    throw new AppError("usercart not found" , 404)
- }
-      if(product.stock<value){
-        throw  new AppError("not enough quantuty" ,404)
-      }
+     if(!product){
+        throw new AppError("product not found",404);
+     }
+
+     if (item.quantity > product.stock) {
+        throw new AppError("not enough quantity",400);
+
+        cost+=product.price*item.quantity
+        const orderItems = [];
+
+        orderItems.push()
+}
+}
+
 
 }
 
