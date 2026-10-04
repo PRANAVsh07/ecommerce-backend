@@ -21,6 +21,11 @@ const cartupdate = async(req,res)=>{
    const updates = req.body;
 
     const result  = await updatecart(updates,userid)
+
+    res.status(200).json({
+        message:"user cart",
+        result
+    })
 }
 
 const addField=async(req,res)=>{

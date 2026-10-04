@@ -6,7 +6,7 @@ import express from"express"
 const cartRouter = express.Router()
 
 cartRouter.get('/',authMiddleware,cart)
-cartRouter.get('/',authMiddleware,cartupdate)
+cartRouter. post('/',authMiddleware,cartupdate)
 cartRouter.patch('/',authMiddleware,addField)
 cartRouter.delete('/',authMiddleware,deleteCart)
 

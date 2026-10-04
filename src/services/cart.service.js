@@ -25,7 +25,7 @@ const updatecart = async (updates, userid) => {
     }
       const amount  = product.stock
     if(amount<value){
-        const diff = value-amount
+        
         throw new AppError("Not enough avalible",400)
     }
 
@@ -52,9 +52,7 @@ const updatecart = async (updates, userid) => {
         item => item.product.toString() === productid
     );
 
-    if(item.quantity+value> product.stock){
-        throw new AppError("Not enough amount")
-    }
+   
 
     // 6. Product not already in cart
     if (!item) {
@@ -66,9 +64,13 @@ const updatecart = async (updates, userid) => {
 
     // 7. Product already in cart
     else {
-        item.quantity += value;
+     if (item.quantity + value > product.stock) {
+        throw new AppError("Not enough amount", 400);
     }
 
+
+ item.quantity += value;
+}
     // 8. Save and return
     await cart.save();
 
@@ -149,4 +151,4 @@ await finduser.save();
 return finduser;
 
 }
-export{cartservice,updatecart , updateField ,cartdelete, dleteAllCart}
+export {cartservice,updatecart , updateField ,cartdelete, dleteAllCart}
