@@ -4,6 +4,7 @@ import errormiddleware from  "./middleware/error.middleware.js"
 import productRouter from "./routes/product.routes.js";
 import { cartRouter } from "./routes/cart.route.js";
 import { orderRouter } from "./routes/order.routes.js";
+import { paymentRouter } from "./routes/paymnet.route.js";
 const app = express()
 
 app.use(express.json());
@@ -13,7 +14,7 @@ app.use('/api/products',productRouter)
 app.use('/api/cart',cartRouter)
 
 app.use('/api/orders',orderRouter)
-
+app.use("/api/payments", paymentRouter);
 
 
 app.use(errormiddleware);
