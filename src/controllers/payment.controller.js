@@ -26,7 +26,7 @@ const newpayment = async(req ,res)=>{
     const paymentid = req.body.razorpay_payment_id;
     const paymentsignature = req.body.razorpay_signature;
 
-    // next: send these to service
+  
 
     const result = await verifyservice(Rorderid,paymentid,paymentsignature)
 };

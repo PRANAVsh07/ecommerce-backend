@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import Order from "../models/order.model.js";
 import Payment from "../models/payment.model.js";
-import { newpayment,verifyPayment } from "../controllers/payment.controller.js";
+
 import AppError from "../error/usererror.js"
 import razorpay from "../config/razorpay.js";
 import crypto from "crypto";
