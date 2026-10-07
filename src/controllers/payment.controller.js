@@ -1,6 +1,6 @@
 import AppError from "../error/usererror.js"
 
-import { createpayment ,verifyservice} from "../services/payment.service.js"
+import { createpayment ,verifyservice ,refund} from "../services/payment.service.js"
 
 
 const newpayment = async(req ,res)=>{
@@ -31,5 +31,20 @@ const newpayment = async(req ,res)=>{
     const result = await verifyservice(Rorderid,paymentid,paymentsignature)
 };
 
-export{newpayment,verifyPayment}
+
+
+const refundcontrols = async(req,res)=>{
+ const orderid =  req.params.orderId 
+   const userid = req.user.id
+
+   const result = await refund(userid, orderid)
+   
+
+   res.status(200).json({
+    message:"Payment refund successfully",
+    result,
+   })
+}
+
+export{newpayment,verifyPayment ,refundcontrols}
 

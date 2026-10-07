@@ -1,7 +1,8 @@
-import { order } from "../controllers/order.controller.js";
+
 import AppError from "../error/usererror.js";
 import Order from "../models/order.model.js";
 import Cart from "../models/cart.model.js";
+
 import Product from "../models/product.model.js";
 
 
@@ -105,4 +106,50 @@ const Singleorder = async(userid, productid)=>{
 
 }
 
-export {orders ,myorder,Singleorder}
+
+const ordercancel = async(data,userid)=>{
+          
+
+ 
+            const order = await Order.findOne({
+    _id: data,
+    user: userid
+});
+      if (!order) {
+    throw new AppError("Order not found", 404);
+      }
+  if(order.status==="delivered"){
+    throw new AppError("order cannot be cancelled" ,400)
+  }
+
+  if (order.status === "cancelled") {
+    throw new AppError("Order is already cancelled", 400);
+}
+
+   if(order.status=="confirmed"){
+     
+    await refund(userid , data)
+   }
+
+
+
+  for (const item of order.items) {
+    const product = await Product.findById(item.product);
+
+    if (!product) {
+        throw new AppError("Product not found", 404);
+    }
+
+    product.stock += item.quantity;
+
+    await product.save();
+}
+order.status = "cancelled";
+await order.save();
+
+return order;
+
+
+
+}
+export {orders ,myorder,Singleorder,ordercancel}

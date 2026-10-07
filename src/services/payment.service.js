@@ -84,4 +84,60 @@ return {
    
 }
 
-export {createpayment,verifyservice}    
+
+const refundPayment = async (payment) => {
+
+    if (!payment.gatewayPaymentId) {
+        throw new AppError("Razorpay payment ID not found", 400);
+    }
+
+    const refund = await razorpay.payments.refund(
+        payment.gatewayPaymentId
+    );
+
+    return refund;
+};
+
+const refund = async(userid , orderid)=>{
+
+    const order = await Order.findOne({
+        user:userid,
+        _id:orderid
+})
+   
+if(!order){
+    throw new AppError("order not found" , 404)
+}
+
+
+
+    if (order.status === "confirmed") {
+
+    const payment = await Payment.findOne({
+        order: orderid,
+        user: userid
+    });
+
+    if (!payment) {
+        throw new AppError("Payment not found", 404);
+    }
+
+    if (payment.status !== "successful") {
+        throw new AppError("Payment cannot be refunded", 400);
+    }
+      const service = await refundPayment(payment);
+
+    if(!service){
+        throw new AppError("Refund not executed",404)
+    }
+    payment.status = "refunded";
+    await payment.save();
+
+    return payment
+}
+     
+  
+  
+}
+
+export {createpayment,verifyservice ,refund}    

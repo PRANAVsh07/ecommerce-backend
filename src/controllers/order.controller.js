@@ -1,5 +1,5 @@
 import AppError from "../error/usererror.js";
-import { myorder, orders, Singleorder } from "../services/order.service.js";
+import { myorder, ordercancel, orders, Singleorder } from "../services/order.service.js";
 
 
 const order = async(req ,res)=>{
@@ -31,9 +31,22 @@ const singleorder  = async(req,res)=>{
 })
 }
 
+const  cancelorder  =async(req,res)=>{
+   const orderid =  req.params.orderId 
+   const userid = req.user.id
+
+   const result = await ordercancel(orderid,userid)
+   
+
+   res.status(200).json({
+    message:"order cancel successfully",
+    result,
+   })
+}
 
 
 
 
 
-export {order,userorder,singleorder}
+
+export {order,userorder,singleorder,cancelorder}
