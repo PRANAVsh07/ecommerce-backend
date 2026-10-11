@@ -1,6 +1,6 @@
 import AppError from "../error/usererror.js"
 import Product from "../models/product.model.js"
-import { createProductService,getProduct,update,deleteProduct } from "../services/product.service.js"
+import { createProductService,getProduct,update,deleteProduct,searchProducts} from "../services/product.service.js"
 
 
 const createProduct = async(req ,res)=>{
@@ -56,4 +56,23 @@ const updateProduct = async(req,res)=>{
 
  }
 
-export  { createProduct,getProducts ,updateProduct ,DeleteProduct  } 
+ 
+
+const findProducts = async (req, res, next) => {
+    try {
+        const result = await searchProducts(req.query);
+
+        res.status(200).json({
+            success: true,
+            ...result
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+
+
+export  { createProduct,getProducts ,updateProduct ,DeleteProduct,findProducts } 
