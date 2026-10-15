@@ -21,6 +21,16 @@ const count = await redisClient.eval(
 );
 
 if (count>limit) {
+
+        let ttl = await redisClient.ttl(key);
+
+        if(ttl===-1||ttl===-2){
+            ttl=60
+        }
+
+        
+
+        res.set("Retry-After", String(ttl));
     return res.status(429).json({
         message: "Too many requests. Please try again later.",
     

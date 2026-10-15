@@ -2,7 +2,7 @@ import AppError from "../error/usererror.js";
 import User from "../models/user.model.js";
 import uservalidate from"../validators/auth.validate.js"
 import Token from "../utils/jwt.js"
-
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const registerService = async  (data) => {
@@ -48,12 +48,14 @@ const login = async(data)=>{
      if(!match){
         throw new AppError("invalid credential" ,401)
      }
-     const accessToken=await Token(user)
+  const { accessToken, refreshToken } = Token(user);
 
-  
+  user.refreshToken = refreshToken;
+await user.save();
      return {
         user,
-        accessToken
+        accessToken,
+         refreshToken
      }
 
       };
@@ -63,6 +65,32 @@ const login = async(data)=>{
       return user
       }
 
+      const refreshtoken = async(data)=>{
+      
+        if(!data){
+          throw new AppError("user not verfied",404)
+        }
+    
+        const decoded= jwt.verify(
+          data, process.env.JWT_REFRESH_SECRET
+        )
+     if(!decoded){
+      throw new AppError("invalid data",404)
+     }
+        const user = await User.findById(decoded.id);
+
+
+if (!user || data !== user.refreshToken) {
+    throw new AppError("Invalid or revoked refresh token", 401);
+}
+            
+         const token = await Token(user);
+         return token;
+      
+        
+
+
+      }
 
 
 

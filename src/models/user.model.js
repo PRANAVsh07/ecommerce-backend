@@ -25,7 +25,13 @@ const userschema = new mongoose.Schema({
   type:String,
 
   default:"user"
-      }
+      
+},
+
+refreshToken: {
+    type: String,
+    default: null
+}
    
 
       })

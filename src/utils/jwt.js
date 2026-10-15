@@ -10,11 +10,29 @@ const accessToken = jwt.sign(
     },
     process.env.JWT_SECRET,
     {
+        expiresIn: "15m"
+    }
+);
+   
+
+
+const refreshToken = jwt.sign(
+    {
+        id: data._id,
+        role: data.role
+    },
+    process.env.JWT_SECRET,
+    {
         expiresIn: "7d"
     }
 );
-    return accessToken
+    return {
+       accessToken ,
+  refreshToken
+
+    }
 }
+
 
 export default Token
 

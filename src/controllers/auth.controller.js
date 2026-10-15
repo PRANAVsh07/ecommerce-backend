@@ -25,7 +25,8 @@ const userlogin  = async(req,res)=>{
         email:result.user.email,
         role:result.user.role,
         },
-        accesstoken:result.accessToken
+        accesstoken:result.accessToken,
+        refreshtoken:result.refreshToken
         
 
     });
