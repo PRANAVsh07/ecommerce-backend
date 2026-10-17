@@ -242,22 +242,6 @@ Use Postman to test your endpoints.
 
 These paths assume your router is mounted at `/api/auth`. Adjust them to match your application.
 
-## 🗺️ Development Roadmap
-
-* [x] User registration and login
-* [x] Password hashing
-* [x] JWT access-token authentication
-* [x] Refresh-token flow
-* [x] Redis caching
-* [x] Redis-based rate limiting
-* [ ] Logout and refresh-token revocation
-* [ ] Background jobs and queues using BullMQ
-* [ ] Automated API testing
-* [ ] Improved logging and monitoring
-* [ ] Production deployment
-
-*Roadmap items reflect the project's intended next steps; verify each feature's implementation before marking it complete.*
-
 ## 🎯 Project Goals
 
 The goal is to build a backend that demonstrates more than basic CRUD operations:
