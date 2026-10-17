@@ -1,4 +1,4 @@
-import {registerService,login,profileservice} from "../services/auth.service.js";
+import {registerService,login,profileservice,refreshtoken} from "../services/auth.service.js";
 
 const registerUser = async (req, res) => {
     const user = await registerService(req.body);
@@ -46,4 +46,16 @@ const profile = async(req,res)=>{
      })
 
 }
-export  {registerUser,userlogin,profile}
+
+const newToken= async(req,res)=>{
+    const token = req.body.refreshToken
+
+    const result = await refreshtoken(token);
+
+    res.status(201).json({
+        message:"Token Genrated Succeffully",
+        result
+    })
+
+}
+export  {registerUser,userlogin,profile,newToken}

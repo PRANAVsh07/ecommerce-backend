@@ -5,6 +5,22 @@ import Token from "../utils/jwt.js"
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
+const generateAccessToken = (user) => {
+    return jwt.sign(
+        {
+            id: user._id,
+            role: user.role
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: "15m"
+        }
+    );
+};
+
+
+
+
 const registerService = async  (data) => {
         uservalidate(data);
     const { email, password, name } = data;
@@ -65,18 +81,28 @@ await user.save();
       return user
       }
 
+
+
+
+
       const refreshtoken = async(data)=>{
       
         if(!data){
-          throw new AppError("user not verfied",404)
+          throw new AppError(401)
         }
+        let decoded;
+        try{
     
-        const decoded= jwt.verify(
+        decoded= jwt.verify(
           data, process.env.JWT_REFRESH_SECRET
         )
-     if(!decoded){
-      throw new AppError("invalid data",404)
-     }
+
+    
+      }
+      catch(err){
+            console.log("Refresh token error:", err.message);
+           throw new AppError("Invalid or expired refresh token", 401);
+      }
         const user = await User.findById(decoded.id);
 
 
@@ -84,8 +110,9 @@ if (!user || data !== user.refreshToken) {
     throw new AppError("Invalid or revoked refresh token", 401);
 }
             
-         const token = await Token(user);
-         return token;
+       
+         const accessToken = generateAccessToken(user);
+         return accessToken;
       
         
 
@@ -94,4 +121,5 @@ if (!user || data !== user.refreshToken) {
 
 
 
-export  {registerService,login,profileservice};
+
+export  {registerService,login,profileservice,refreshtoken};

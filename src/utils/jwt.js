@@ -1,38 +1,29 @@
+
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config()  
-const Token = async(data)=>{
- 
-const accessToken = jwt.sign(
-    {
-        id: data._id,
-        role: data.role
-    },
-    process.env.JWT_SECRET,
-    {
-        expiresIn: "15m"
-    }
-);
-   
 
+const Token = (user) => {
+    const payload = {
+        id: user._id,
+        role: user.role
+    };
 
-const refreshToken = jwt.sign(
-    {
-        id: data._id,
-        role: data.role
-    },
-    process.env.JWT_SECRET,
-    {
-        expiresIn: "7d"
-    }
-);
+    const accessToken = jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: "15m" }
+    );
+
+    const refreshToken = jwt.sign(
+        payload,
+        process.env.JWT_REFRESH_SECRET,
+        { expiresIn: "7d" }
+    );
+
     return {
-       accessToken ,
-  refreshToken
+        accessToken,
+        refreshToken
+    };
+};
 
-    }
-}
-
-
-export default Token
+export default Token;
 
